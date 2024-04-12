@@ -7,7 +7,7 @@ from settings import FPS, GAME_NAME, HEIGHT, WIDTH
 
 # Function Defintions
 def update_lasers(lasers: list[pygame.Rect], deltaTime: float, speed: float = 300):
-    for laser_rect in laser_list:
+    for laser_rect in lasers:
         # Temporary workaround until we can handle delta time based movement.
         laser_rect.y -= speed * deltaTime
 
@@ -52,6 +52,11 @@ def can_shoot(duration=500) -> bool:
     return False
 
 
+def quit_game():
+    pygame.quit()
+    sys.exit()
+
+
 # Game Init
 pygame.init()
 pygame.display.set_caption(GAME_NAME)
@@ -91,8 +96,7 @@ while True:
     # Event Loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+            quit_game()
         if event.type == pygame.MOUSEBUTTONDOWN and can_shoot():
             laser_list.append(laser_surface.get_rect(midbottom=ship_rect.midtop))
             shoot_time = pygame.time.get_ticks()
@@ -117,6 +121,14 @@ while True:
     meteor_list = [
         meteor_tuple for meteor_tuple in meteor_list if meteor_tuple[0].top < HEIGHT
     ]
+    for meteor in meteor_list:
+        if ship_rect.colliderect(meteor[0]):
+            quit_game()
+
+        for laser in laser_list:
+            if laser.colliderect(meteor[0]):
+                meteor_list.remove(meteor)
+                laser_list.remove(laser)
 
     # Draw
     display_surface.fill("black")
