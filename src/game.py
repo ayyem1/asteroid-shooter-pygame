@@ -1,6 +1,7 @@
 import sys
 
 import pygame
+from debug import display_fps
 from settings import FPS, GAME_NAME, HEIGHT, WIDTH
 
 
@@ -23,4 +24,6 @@ class Game:
             self.clock.tick(FPS)
 
             self.screen.fill("black")
+            display_fps(self.clock)
+
             pygame.display.update()
