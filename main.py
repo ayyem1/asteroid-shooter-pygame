@@ -1,8 +1,9 @@
 import sys
 
 import pygame
-from debug import display_fps
-from settings import FPS, GAME_NAME, HEIGHT, WIDTH
+
+from engine.debug import display_fps
+from game.settings import FPS, GAME_NAME, WINDOW_HEIGHT, WINDOW_WIDTH
 
 
 class Game:
@@ -11,7 +12,7 @@ class Game:
 
         pygame.display.set_caption(GAME_NAME)
 
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pygame.time.Clock()
 
     def run(self) -> None:
@@ -24,6 +25,11 @@ class Game:
             self.clock.tick(FPS)
 
             self.screen.fill("black")
-            display_fps(self.clock)
+            display_fps(self.clock, WINDOW_WIDTH)
 
             pygame.display.update()
+
+
+if __name__ == "__main__":
+    game = Game()
+    game.run()

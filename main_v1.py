@@ -2,7 +2,7 @@ import sys
 from random import randint, uniform
 
 import pygame
-from settings import FPS, GAME_NAME, HEIGHT, WIDTH
+from settings import FPS, GAME_NAME, WINDOW_HEIGHT, WINDOW_WIDTH
 
 
 # Function Defintions
@@ -27,7 +27,9 @@ def update_meteors(
 def display_score():
     score_text = f"Score: {pygame.time.get_ticks() // 1000}"
     score_surface: pygame.Surface = font.render(score_text, True, "white")
-    score_rect: pygame.Rect = score_surface.get_rect(midbottom=(WIDTH / 2, HEIGHT - 80))
+    score_rect: pygame.Rect = score_surface.get_rect(
+        midbottom=(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 80)
+    )
     display_surface.blit(score_surface, score_rect)
     pygame.draw.rect(
         display_surface, "white", score_rect.inflate(30, 30), width=8, border_radius=5
@@ -37,7 +39,7 @@ def display_score():
 def display_fps():
     fps_text = "{:.2f}".format(clock.get_fps())
     fps_surface: pygame.Surface = font.render(fps_text, True, "white")
-    fps_rect: pygame.Rect = fps_surface.get_rect(midbottom=(WIDTH - 100, 80))
+    fps_rect: pygame.Rect = fps_surface.get_rect(midbottom=(WINDOW_WIDTH - 100, 80))
     display_surface.blit(fps_surface, fps_rect)
     pygame.draw.rect(
         display_surface, "white", fps_rect.inflate(30, 30), width=8, border_radius=5
@@ -61,12 +63,14 @@ def quit_game():
 pygame.init()
 pygame.display.set_caption(GAME_NAME)
 
-display_surface: pygame.Surface = pygame.display.set_mode((WIDTH, HEIGHT))
+display_surface: pygame.Surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 clock: pygame.Clock = pygame.time.Clock()
 
 # Ship Import
 ship_surface: pygame.Surface = pygame.image.load("../graphics/ship.png").convert_alpha()
-ship_rect: pygame.Rect = ship_surface.get_rect(center=(WIDTH / 2, HEIGHT / 2))
+ship_rect: pygame.Rect = ship_surface.get_rect(
+    center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+)
 
 # Laser Import + Definitions
 laser_surface: pygame.Surface = pygame.image.load(
@@ -108,7 +112,7 @@ while True:
             shoot_time = pygame.time.get_ticks()
             laser_shoot_sound.play()
         if event.type == meteor_timer:
-            x_pos = randint(-100, WIDTH + 100)
+            x_pos = randint(-100, WINDOW_WIDTH + 100)
             y_pos = randint(-150, -50)
             meteor_rect = meteor_surface.get_rect(center=(x_pos, y_pos))
             direction = pygame.math.Vector2(uniform(-0.5, 0.5), 1)
@@ -126,7 +130,9 @@ while True:
 
     update_meteors(meteor_list, dt)
     meteor_list = [
-        meteor_tuple for meteor_tuple in meteor_list if meteor_tuple[0].top < HEIGHT
+        meteor_tuple
+        for meteor_tuple in meteor_list
+        if meteor_tuple[0].top < WINDOW_HEIGHT
     ]
     for meteor in meteor_list:
         if ship_rect.colliderect(meteor[0]):
