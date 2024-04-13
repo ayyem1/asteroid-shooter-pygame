@@ -1,13 +1,12 @@
 import pygame
 from pygame import Vector2
 
-from engine.entity import Entity
 
-
-class Ship(Entity):
+class Ship(pygame.sprite.Sprite):
     def __init__(self, position: Vector2, groups):
-        super().__init__(imgPath="data/graphics/ship.png", groups=groups)
+        super().__init__(groups)
 
+        self.image = pygame.image.load("data/graphics/ship.png")
         self.rect = self.image.get_rect(center=position)
         self.duration: float = 500.0
         self.shoot_time: float = -1.0
