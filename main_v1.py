@@ -2,7 +2,8 @@ import sys
 from random import randint, uniform
 
 import pygame
-from settings import FPS, GAME_NAME, WINDOW_HEIGHT, WINDOW_WIDTH
+
+from game.settings import FPS, GAME_NAME, WINDOW_HEIGHT, WINDOW_WIDTH
 
 
 # Function Defintions
