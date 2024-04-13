@@ -5,7 +5,7 @@ from engine.entity import Entity
 
 
 class Laser(Entity):
-    def __init__(self, group, position: Vector2):
-        super().__init__(imgPath="data/graphics/laser.png", group=group)
+    def __init__(self, position: Vector2, groups):
+        super().__init__(imgPath="data/graphics/laser.png", groups=groups)
 
         self.rect = self.image.get_rect(midbottom=position)

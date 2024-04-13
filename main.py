@@ -17,10 +17,10 @@ class Game:
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pygame.time.Clock()
 
-        self.spaceship_group = pygame.sprite.Group()
+        self.spaceship_group = pygame.sprite.GroupSingle()
         self.ship = Ship(
-            group=self.spaceship_group,
             position=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2),
+            groups=self.spaceship_group,
         )
 
         self.laser_group = pygame.sprite.Group()
@@ -35,11 +35,11 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN and self.ship.can_shoot():
-                    # We create a surface and load the img each time this entity is created
+                    # TODO: We create a surface and load the img each time this entity is created
                     self.laser_list.append(
                         Laser(
-                            group=self.laser_group,
                             position=self.ship.rect.midtop,
+                            groups=self.laser_group,
                         )
                     )
                     self.ship.shoot()
