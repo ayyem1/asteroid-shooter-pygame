@@ -3,7 +3,6 @@ import sys
 import pygame
 
 from engine.debug import display_fps
-from game.laser import Laser
 from game.settings import FPS, GAME_NAME, WINDOW_HEIGHT, WINDOW_WIDTH
 from game.ship import Ship
 
@@ -34,19 +33,18 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN and self.ship.can_shoot():
-                    # TODO: We create a surface and load the img each time this entity is created
-                    self.laser_list.append(
-                        Laser(
-                            position=self.ship.rect.midtop,
-                            groups=self.laser_group,
-                        )
-                    )
-                    self.ship.shoot()
+                # if event.type == pygame.MOUSEBUTTONDOWN:
+                #     # TODO: We create a surface and load the img each time this entity is created
+                #     self.laser_list.append(
+                #         Laser(
+                #             position=self.ship.rect.midtop,
+                #             groups=self.laser_group,
+                #         )
+                #     )
 
-            self.clock.tick(FPS)
+            dt: float = self.clock.tick(FPS) / 1000.0
 
-            self.ship.rect.center = pygame.mouse.get_pos()
+            self.spaceship_group.update(deltaTime=dt)
 
             self.display_surface.fill("black")
             self.display_surface.blit(self.background_surface, (0, 0))
