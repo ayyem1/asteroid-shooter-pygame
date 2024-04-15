@@ -57,7 +57,7 @@ class Game:
                             groups=self.laser_group,
                         )
                     if event.custom_event_type == GameEvents.METEOR_TIMER_COMPLETE:
-                        Meteor(self.meteor_group)
+                        Meteor(groups=self.meteor_group)
 
             dt: float = self.clock.tick(FPS) / 1000.0
 
