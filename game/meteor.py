@@ -2,7 +2,7 @@ from random import randint, uniform
 
 import pygame
 
-from game.settings import METEOR_SPEED, WINDOW_HEIGHT, WINDOW_WIDTH
+from game.settings import METEOR_SPEED_RANGE, WINDOW_HEIGHT, WINDOW_WIDTH
 
 
 class Meteor(pygame.sprite.Sprite):
@@ -17,7 +17,8 @@ class Meteor(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(x_pos, y_pos))
         self.pos = self.rect.topleft
 
-        self.speed = METEOR_SPEED
+        lower, upper = METEOR_SPEED_RANGE
+        self.speed = randint(lower, upper)
         self.direction = pygame.math.Vector2(uniform(-0.5, 0.5), 1)
 
     def update(self, deltaTime):
