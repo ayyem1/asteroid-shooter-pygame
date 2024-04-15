@@ -1,15 +1,25 @@
+from typing import Union
+
 import pygame
 from pygame import Vector2
 
+from engine.events import EventSystem
+from game.game_events import GameEvents
+
 
 class Ship(pygame.sprite.Sprite):
-    def __init__(self, position: Vector2, groups):
+    def __init__(self, position: Vector2, laser_group: pygame.sprite.Group, groups):
         super().__init__(groups)
 
-        self.image = pygame.image.load("data/graphics/ship.png")
-        self.rect = self.image.get_rect(center=position)
+        self.image: pygame.Surface = pygame.image.load("data/graphics/ship.png")
+        self.rect: pygame.Rect = self.image.get_rect(center=position)
         self.duration: float = 300.0
         self.shoot_time: float = -1.0
+        self.player_shoot_event: Union[
+            pygame.Event, None
+        ] = EventSystem().get_custom_event(
+            custom_event_type=GameEvents.PLAYER_PRIMARY_SHOOT
+        )
 
     def can_shoot(self) -> bool:
         current_time = pygame.time.get_ticks()
@@ -19,11 +29,12 @@ class Ship(pygame.sprite.Sprite):
         return False
 
     def shoot(self) -> bool:
-        print("shoot")
+        if self.player_shoot_event:
+            pygame.event.post(self.player_shoot_event)
+
         self.shoot_time = pygame.time.get_ticks()
 
     def update(self, deltaTime):
-        print("ship ", deltaTime)
         self.rect.center = pygame.mouse.get_pos()
 
         if self.can_shoot() and pygame.mouse.get_pressed()[0]:
