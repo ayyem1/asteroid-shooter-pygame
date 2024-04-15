@@ -5,6 +5,7 @@ from pygame import Vector2
 
 from engine.events import EventSystem
 from game.game_events import GameEvents
+from game.settings import SHIP_SHOOT_COOLDOWN
 
 
 class Ship(pygame.sprite.Sprite):
@@ -13,7 +14,7 @@ class Ship(pygame.sprite.Sprite):
 
         self.image: pygame.Surface = pygame.image.load("data/graphics/ship.png")
         self.rect: pygame.Rect = self.image.get_rect(center=position)
-        self.duration: float = 300.0
+        self.duration: float = SHIP_SHOOT_COOLDOWN
         self.shoot_time: float = -1.0
         self.player_shoot_event: Union[
             pygame.Event, None

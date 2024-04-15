@@ -7,7 +7,7 @@ from engine.events import EventSystem
 from game.game_events import GameEvents
 from game.laser import Laser
 from game.meteor import Meteor
-from game.settings import FPS, GAME_NAME, WINDOW_HEIGHT, WINDOW_WIDTH
+from game.settings import FPS, GAME_NAME, METEOR_SPAWN_RATE, WINDOW_HEIGHT, WINDOW_WIDTH
 from game.ship import Ship
 
 
@@ -37,7 +37,7 @@ class Game:
             EventSystem().get_custom_event(
                 custom_event_type=GameEvents.METEOR_TIMER_COMPLETE
             ),
-            500,
+            METEOR_SPAWN_RATE,
         )
 
         self.laser_group = pygame.sprite.Group()
