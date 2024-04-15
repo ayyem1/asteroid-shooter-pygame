@@ -12,23 +12,29 @@ from game.ship import Ship
 
 class Game:
     def __init__(self) -> None:
+        # Init pygame
         pygame.init()
 
+        # Init window
         pygame.display.set_caption(GAME_NAME)
-
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+        # Init clock
         self.clock = pygame.time.Clock()
 
-        EventSystem().create_custom_event(GameEvents.PLAYER_PRIMARY_SHOOT)
+        # Init events
+        for event_type in GameEvents:
+            EventSystem().create_custom_event(custom_event_type=event_type)
 
+        # Init game components
         self.spaceship_group = pygame.sprite.GroupSingle()
-        self.laser_group = pygame.sprite.Group()
         self.ship = Ship(
             position=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2),
             laser_group=self.laser_group,
             groups=self.spaceship_group,
         )
 
+        self.laser_group = pygame.sprite.Group()
         self.background_surface = pygame.image.load("data/graphics/background.png")
 
     def run(self) -> None:

@@ -6,6 +6,7 @@ class Laser(pygame.sprite.Sprite):
     def __init__(self, position: Vector2, groups):
         super().__init__(groups)
 
+        # Todo: Optimize this. We load this image each time we spawn a laser.
         self.image = pygame.image.load("data/graphics/laser.png").convert_alpha()
         self.rect = self.image.get_rect(midbottom=position)
         self.pos = self.rect.topleft
