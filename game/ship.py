@@ -8,7 +8,7 @@ from game.game_events import GameEvents
 
 
 class Ship(pygame.sprite.Sprite):
-    def __init__(self, position: Vector2, laser_group: pygame.sprite.Group, groups):
+    def __init__(self, position: Vector2, groups: pygame.sprite.Group):
         super().__init__(groups)
 
         self.image: pygame.Surface = pygame.image.load("data/graphics/ship.png")

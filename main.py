@@ -6,6 +6,7 @@ from engine.debug import display_fps
 from engine.events import EventSystem
 from game.game_events import GameEvents
 from game.laser import Laser
+from game.meteor import Meteor
 from game.settings import FPS, GAME_NAME, WINDOW_HEIGHT, WINDOW_WIDTH
 from game.ship import Ship
 
@@ -30,11 +31,17 @@ class Game:
         self.spaceship_group = pygame.sprite.GroupSingle()
         self.ship = Ship(
             position=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2),
-            laser_group=self.laser_group,
             groups=self.spaceship_group,
+        )
+        self.meteor_timer = pygame.time.set_timer(
+            EventSystem().get_custom_event(
+                custom_event_type=GameEvents.METEOR_TIMER_COMPLETE
+            ),
+            500,
         )
 
         self.laser_group = pygame.sprite.Group()
+        self.meteor_group = pygame.sprite.Group()
         self.background_surface = pygame.image.load("data/graphics/background.png")
 
     def run(self) -> None:
@@ -49,6 +56,8 @@ class Game:
                             position=self.ship.rect.midtop,
                             groups=self.laser_group,
                         )
+                    if event.custom_event_type == GameEvents.METEOR_TIMER_COMPLETE:
+                        Meteor(self.meteor_group)
 
             dt: float = self.clock.tick(FPS) / 1000.0
 
@@ -59,12 +68,18 @@ class Game:
                 if not laser.is_on_screen():
                     self.laser_group.remove(laser)
 
+            self.meteor_group.update(deltaTime=dt)
+            for meteor in self.meteor_group:
+                if not meteor.is_on_screen():
+                    self.meteor_group.remove(meteor)
+
             self.display_surface.fill("black")
             self.display_surface.blit(self.background_surface, (0, 0))
 
             display_fps(self.clock, WINDOW_WIDTH)
-            self.laser_group.draw(self.display_surface)
             self.spaceship_group.draw(self.display_surface)
+            self.laser_group.draw(self.display_surface)
+            self.meteor_group.draw(self.display_surface)
 
             pygame.display.update()
 

@@ -3,7 +3,7 @@ from pygame import Vector2
 
 
 class Laser(pygame.sprite.Sprite):
-    def __init__(self, position: Vector2, groups):
+    def __init__(self, position: Vector2, groups: pygame.sprite.Group):
         super().__init__(groups)
 
         # Todo: Optimize this. We load this image each time we spawn a laser.
