@@ -25,8 +25,9 @@ class Laser(pygame.sprite.Sprite):
             e = EventSystem().get_custom_event(
                 custom_event_type=GameEvents.METEOR_DESTROYED
             )
-            e.laser = self
             pygame.event.post(e)
+
+            self.kill()
 
     def update(self, delta_time: float, meteor_group: pygame.sprite.Group):
         self.pos += self.direction * self.speed * delta_time

@@ -46,6 +46,11 @@ class Game:
         self.background_surface = pygame.image.load("data/graphics/background.png")
         self.score_ui = Score()
 
+        self.laser_shoot_sound = pygame.mixer.Sound("data/sounds/laser.ogg")
+        self.explosion_sound = pygame.mixer.Sound("data/sounds/explosion.wav")
+        self.background_music = pygame.mixer.Sound("data/sounds/music.wav")
+        self.background_music.play(loops=-1)
+
     def run(self) -> None:
         while True:
             for event in pygame.event.get():
@@ -54,6 +59,7 @@ class Game:
                     sys.exit()
                 elif event.type == EventSystem().user_event_slot:
                     if event.custom_event_type == GameEvents.PLAYER_PRIMARY_SHOOT:
+                        self.laser_shoot_sound.play()
                         Laser(
                             position=self.ship.rect.midtop,
                             groups=self.laser_group,
@@ -64,7 +70,7 @@ class Game:
                         pygame.quit()
                         sys.exit()
                     if event.custom_event_type == GameEvents.METEOR_DESTROYED:
-                        event.laser.kill()
+                        self.explosion_sound.play()
 
             dt: float = self.clock.tick(FPS) / 1000.0
 
