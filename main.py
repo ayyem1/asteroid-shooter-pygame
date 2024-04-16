@@ -7,6 +7,7 @@ from engine.events import EventSystem
 from game.game_events import GameEvents
 from game.laser import Laser
 from game.meteor import Meteor
+from game.score import Score
 from game.settings import FPS, GAME_NAME, METEOR_SPAWN_RATE, WINDOW_HEIGHT, WINDOW_WIDTH
 from game.ship import Ship
 
@@ -43,6 +44,7 @@ class Game:
         self.laser_group = pygame.sprite.Group()
         self.meteor_group = pygame.sprite.Group()
         self.background_surface = pygame.image.load("data/graphics/background.png")
+        self.score_ui = Score()
 
     def run(self) -> None:
         while True:
@@ -80,6 +82,7 @@ class Game:
             self.spaceship_group.draw(self.display_surface)
             self.laser_group.draw(self.display_surface)
             self.meteor_group.draw(self.display_surface)
+            self.score_ui.display_score()
 
             pygame.display.update()
 
