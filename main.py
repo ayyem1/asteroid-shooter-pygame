@@ -78,11 +78,13 @@ class Game:
             self.display_surface.fill("black")
             self.display_surface.blit(self.background_surface, (0, 0))
 
+            self.score_ui.display()
+
             display_fps(self.clock, WINDOW_WIDTH)
+
             self.spaceship_group.draw(self.display_surface)
             self.laser_group.draw(self.display_surface)
             self.meteor_group.draw(self.display_surface)
-            self.score_ui.display_score()
 
             pygame.display.update()
 
