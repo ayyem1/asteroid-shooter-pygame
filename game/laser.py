@@ -16,9 +16,12 @@ class Laser(pygame.sprite.Sprite):
         self.pos = self.rect.topleft
         self.speed = LASER_SPEED
         self.direction = pygame.math.Vector2(0, -1)
+        self.mask = pygame.mask.from_surface(self.image)
 
     def meteor_collision(self, meteor_group: pygame.sprite.Group):
-        if pygame.sprite.spritecollide(self, meteor_group, True):
+        if pygame.sprite.spritecollide(
+            self, meteor_group, True, pygame.sprite.collide_mask
+        ):
             e = EventSystem().get_custom_event(
                 custom_event_type=GameEvents.METEOR_DESTROYED
             )

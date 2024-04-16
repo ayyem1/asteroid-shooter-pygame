@@ -18,6 +18,7 @@ class Meteor(pygame.sprite.Sprite):
             meteor_surface, (scale_factor, scale_factor)
         )
         self.image: pygame.Surface = self.original_image
+        self.mask = pygame.mask.from_surface(self.image)
 
         x_pos: float = randint(-100, WINDOW_WIDTH + 100)
         y_pos: float = randint(-150, -50)
@@ -38,6 +39,7 @@ class Meteor(pygame.sprite.Sprite):
         )
         self.image = rotated_surface
         self.rect = self.image.get_rect(center=self.rect.center)
+        self.mask = pygame.mask.from_surface(self.image)
 
     def update(self, delta_time: float):
         self.pos += self.direction * self.speed * delta_time

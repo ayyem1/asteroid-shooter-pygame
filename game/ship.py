@@ -21,6 +21,7 @@ class Ship(pygame.sprite.Sprite):
         ] = EventSystem().get_custom_event(
             custom_event_type=GameEvents.PLAYER_PRIMARY_SHOOT
         )
+        self.mask = pygame.mask.from_surface(self.image)
 
     def can_shoot(self) -> bool:
         current_time = pygame.time.get_ticks()
@@ -36,7 +37,9 @@ class Ship(pygame.sprite.Sprite):
         self.shoot_time = pygame.time.get_ticks()
 
     def meteor_collision(self, meteor_group: pygame.sprite.Group):
-        if pygame.sprite.spritecollide(self, meteor_group, True):
+        if pygame.sprite.spritecollide(
+            self, meteor_group, True, pygame.sprite.collide_mask
+        ):
             pygame.event.post(
                 EventSystem().get_custom_event(
                     custom_event_type=GameEvents.SHIP_DESTROYED
