@@ -1,6 +1,8 @@
 import pygame
 from pygame import Vector2
 
+from engine.events import EventSystem
+from game.game_events import GameEvents
 from game.settings import LASER_SPEED
 
 
@@ -15,9 +17,19 @@ class Laser(pygame.sprite.Sprite):
         self.speed = LASER_SPEED
         self.direction = pygame.math.Vector2(0, -1)
 
-    def update(self, delta_time: float):
+    def meteor_collision(self, meteor_group: pygame.sprite.Group):
+        if pygame.sprite.spritecollide(self, meteor_group, True):
+            e = EventSystem().get_custom_event(
+                custom_event_type=GameEvents.METEOR_DESTROYED
+            )
+            e.laser = self
+            pygame.event.post(e)
+
+    def update(self, delta_time: float, meteor_group: pygame.sprite.Group):
         self.pos += self.direction * self.speed * delta_time
         self.rect.topleft = (round(self.pos.x), round(self.pos.y))
 
-    def is_on_screen(self) -> bool:
-        return self.rect.y > 0
+        if self.rect.y < 0:
+            self.kill()
+        else:
+            self.meteor_collision(meteor_group=meteor_group)

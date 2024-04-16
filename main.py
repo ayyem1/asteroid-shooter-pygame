@@ -63,20 +63,14 @@ class Game:
                     if event.custom_event_type == GameEvents.SHIP_DESTROYED:
                         pygame.quit()
                         sys.exit()
+                    if event.custom_event_type == GameEvents.METEOR_DESTROYED:
+                        event.laser.kill()
 
             dt: float = self.clock.tick(FPS) / 1000.0
 
             self.spaceship_group.update(delta_time=dt, meteor_group=self.meteor_group)
-            self.laser_group.update(delta_time=dt)
-
-            for laser in self.laser_group:
-                if not laser.is_on_screen():
-                    self.laser_group.remove(laser)
-
+            self.laser_group.update(delta_time=dt, meteor_group=self.meteor_group)
             self.meteor_group.update(delta_time=dt)
-            for meteor in self.meteor_group:
-                if not meteor.is_on_screen():
-                    self.meteor_group.remove(meteor)
 
             self.display_surface.fill("black")
             self.display_surface.blit(self.background_surface, (0, 0))
