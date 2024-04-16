@@ -15,8 +15,8 @@ class Laser(pygame.sprite.Sprite):
         self.speed = LASER_SPEED
         self.direction = pygame.math.Vector2(0, -1)
 
-    def update(self, deltaTime):
-        self.pos += self.direction * self.speed * deltaTime
+    def update(self, delta_time: float):
+        self.pos += self.direction * self.speed * delta_time
         self.rect.topleft = (round(self.pos.x), round(self.pos.y))
 
     def is_on_screen(self) -> bool:

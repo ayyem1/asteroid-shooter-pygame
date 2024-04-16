@@ -9,3 +9,4 @@ class GameEvents(CustomEventType):
 
     PLAYER_PRIMARY_SHOOT = 1
     METEOR_TIMER_COMPLETE = 2
+    SHIP_DESTROYED = 3

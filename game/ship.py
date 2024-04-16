@@ -35,8 +35,18 @@ class Ship(pygame.sprite.Sprite):
 
         self.shoot_time = pygame.time.get_ticks()
 
-    def update(self, deltaTime):
+    def meteor_collision(self, meteor_group: pygame.sprite.Group):
+        if pygame.sprite.spritecollide(self, meteor_group, True):
+            pygame.event.post(
+                EventSystem().get_custom_event(
+                    custom_event_type=GameEvents.SHIP_DESTROYED
+                )
+            )
+
+    def update(self, delta_time: float, meteor_group: pygame.sprite.Group):
         self.rect.center = pygame.mouse.get_pos()
 
         if self.can_shoot() and pygame.mouse.get_pressed()[0]:
             self.shoot()
+
+        self.meteor_collision(meteor_group=meteor_group)

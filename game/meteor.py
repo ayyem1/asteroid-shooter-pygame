@@ -31,16 +31,18 @@ class Meteor(pygame.sprite.Sprite):
         self.rotation = 0
         self.rotation_speed = randint(20, 50)
 
-    def rotate(self, deltaTime: float):
-        self.rotation += self.rotation_speed * deltaTime
-        rotated_surface = pygame.transform.rotozoom(self.original_image, self.rotation)
+    def rotate(self, delta_time: float):
+        self.rotation += self.rotation_speed * delta_time
+        rotated_surface = pygame.transform.rotozoom(
+            self.original_image, self.rotation, 1
+        )
         self.image = rotated_surface
-        self.rect = pygame.image.get_rect(center=self.rect.center)
+        self.rect = self.image.get_rect(center=self.rect.center)
 
-    def update(self, deltaTime):
-        self.pos += self.direction * self.speed * deltaTime
+    def update(self, delta_time: float):
+        self.pos += self.direction * self.speed * delta_time
         self.rect.topleft = (round(self.pos.x), round(self.pos.y))
-        self.rotate(deltaTime=deltaTime)
+        self.rotate(delta_time=delta_time)
 
     def is_on_screen(self) -> bool:
         return self.rect.y < WINDOW_HEIGHT
